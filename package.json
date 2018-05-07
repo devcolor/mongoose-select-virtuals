@@ -15,6 +15,9 @@
     "mongoose-lean-virtuals",
     "select"
   ],
+  "peerDependencies": {
+    "mongoose-lean-virtuals": "^0.3.0"
+  },
   "author": "Makinde Adeagbo",
   "license": "ISC"
 }
