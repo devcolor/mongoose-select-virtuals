@@ -1,0 +1,20 @@
+{
+  "name": "mongoose-select-virtuals",
+  "version": "0.0.0",
+  "description": "Select virtual fields while using `.lean()` on mongoose queries",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "moongoose",
+    "lean",
+    "mongodb",
+    "virtuals",
+    "lean-virtuals",
+    "mongoose-lean-virtuals",
+    "select"
+  ],
+  "author": "Makinde Adeagbo",
+  "license": "ISC"
+}
