@@ -1,9 +1,6 @@
 module.exports = function selectVirtuals(schema) {
   function preFind(next) {
-    if (!this.selected()
-      || !this._mongooseOptions.lean
-      || !this._mongooseOptions.lean.virtuals
-      || this._mongooseOptions.lean.virtuals.length) {
+    if (!this.selected() || !this._mongooseOptions.lean) {
       return next();
     }
 
