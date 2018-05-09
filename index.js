@@ -15,6 +15,9 @@ module.exports = function selectVirtuals(schema) {
     });
 
     if (virtualFields.length > 0) {
+      if (this._mongooseOptions.lean === true) {
+        this._mongooseOptions.lean = {};
+      }
       this._mongooseOptions.lean.virtuals = virtualFields;
     }
 

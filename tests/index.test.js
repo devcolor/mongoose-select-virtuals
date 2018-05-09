@@ -37,7 +37,7 @@ module.exports = {
 
     Model.find({}, 'real_key virtual_key1').lean().exec(function (err, results) {
       t.equal(results[0].real_key, 'foo');
-      t.equal(results[0].virtual_key1, undefined);
+      t.equal(results[0].virtual_key1, 'v_val1');
       t.equal(results[0].virtual_key2, undefined);
       t.done();
     });
@@ -49,6 +49,16 @@ module.exports = {
       t.equal(results[0].real_key, 'foo');
       t.equal(results[0].virtual_key1, 'v_val1');
       t.equal(results[0].virtual_key2, 'v_val2');
+      t.done();
+    });
+  },
+  'nothing selected': function (t) {
+    t.expect(3);
+
+    Model.find({}).lean().exec(function (err, results) {
+      t.equal(results[0].real_key, 'foo');
+      t.equal(results[0].virtual_key1, undefined);
+      t.equal(results[0].virtual_key2, undefined);
       t.done();
     });
   },
