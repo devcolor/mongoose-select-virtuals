@@ -1,6 +1,6 @@
 {
   "name": "mongoose-select-virtuals",
-  "version": "0.0.0",
+  "version": "1.0.0-0",
   "description": "Select virtual fields while using `.lean()` on mongoose queries",
   "main": "index.js",
   "engines": {
