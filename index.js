@@ -4,7 +4,7 @@ module.exports = function selectVirtuals(schema) {
       || !this._mongooseOptions.lean
       || !this._mongooseOptions.lean.virtuals
       || this._mongooseOptions.lean.virtuals.length) {
-      return;
+      return next();
     }
 
     var selection = this._fields;

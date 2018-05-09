@@ -3,8 +3,11 @@
   "version": "0.0.0",
   "description": "Select virtual fields while using `.lean()` on mongoose queries",
   "main": "index.js",
+  "engines": {
+    "node": ">=6.14.2"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "nodeunit tests/*.test.js"
   },
   "keywords": [
     "moongoose",
@@ -19,5 +22,15 @@
     "mongoose-lean-virtuals": "^0.3.0"
   },
   "author": "Makinde Adeagbo",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "mongoose": "~5.0",
+    "mongoose-lean-virtuals": "0.3.0",
+    "nodeunit": "0.11.2",
+    "np": "2.20.1"
+  },
+  "bugs": {
+    "url": "https://github.com/devcolor/mongoose-select-virtuals/issues"
+  },
+  "homepage": "https://github.com/devcolor/mongoose-select-virtuals"
 }
