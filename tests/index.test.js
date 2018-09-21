@@ -1,70 +1,54 @@
-var mongoose = require('mongoose');
-var leanVirtuals = require('mongoose-lean-virtuals');
-var selectVirtuals = require('../');
+const test = require('ava');
+const mongoose = require('mongoose');
+const leanVirtuals = require('mongoose-lean-virtuals');
+const selectVirtuals = require('../');
 
-const dbUri = 'mongodb://localhost:27017/mongooseAuthorization';
-mongoose.Promise = global.Promise;
-mongoose.connect(dbUri);
-
-var schema = new mongoose.Schema({
+const schema = new mongoose.Schema({
   real_key: String
 });
-schema.virtual('virtual_key1').get(function () { return 'v_val1'; });
-schema.virtual('virtual_key2').get(function () { return 'v_val2'; });
+schema.virtual('virtual_key1').get(() => 'v_val1');
+schema.virtual('virtual_key2').get(() => 'v_val2');
 schema.plugin(leanVirtuals);
 schema.plugin(selectVirtuals);
-var Model = mongoose.model('t1', schema);
 
-module.exports = {
+const Model = mongoose.model('t1', schema);
 
-  setUp: function (callback) {
-    Model.create({real_key: 'foo'}, function (err, obj) {
-      callback();
-    });
-  },
-  'virtual in select': function (t) {
-    t.expect(3);
+test.before(async () => {
+  const dbUri = 'mongodb://localhost:27017/mongooseAuthorization';
+  mongoose.Promise = global.Promise;
+  await mongoose.connect(dbUri);
+  await Model.create({real_key: 'foo'});
+});
 
-    Model.find({}, 'real_key virtual_key1').lean({virtuals: true}).exec(function (err, results) {
-      t.equal(results[0].real_key, 'foo');
-      t.equal(results[0].virtual_key1, 'v_val1');
-      t.equal(results[0].virtual_key2, undefined);
-      t.done();
-    });
-  },
-  'lean equals true': function (t) {
-    t.expect(3);
+test('Virtual field in select, lean set to `virtuals:true`', async t => {
+  const result = await Model.findOne({}, 'real_key virtual_key1').lean({virtuals: true}).exec();
+  t.is(result.real_key, 'foo');
+  t.is(result.virtual_key1, 'v_val1');
+  t.is(result.virtual_key2, undefined);
+});
 
-    Model.find({}, 'real_key virtual_key1').lean().exec(function (err, results) {
-      t.equal(results[0].real_key, 'foo');
-      t.equal(results[0].virtual_key1, 'v_val1');
-      t.equal(results[0].virtual_key2, undefined);
-      t.done();
-    });
-  },
-  'not lean': function (t) {
-    t.expect(3);
+test('Virtual field in select, lean set to `true`', async t => {
+  const result = await Model.findOne({}, 'real_key virtual_key1').lean().exec();
+  t.is(result.real_key, 'foo');
+  t.is(result.virtual_key1, 'v_val1');
+  t.is(result.virtual_key2, undefined);
+});
 
-    Model.find({}, 'real_key virtual_key1').exec(function (err, results) {
-      t.equal(results[0].real_key, 'foo');
-      t.equal(results[0].virtual_key1, 'v_val1');
-      t.equal(results[0].virtual_key2, 'v_val2');
-      t.done();
-    });
-  },
-  'nothing selected': function (t) {
-    t.expect(3);
+test('Query is not lean', async t => {
+  const result = await Model.findOne({}, 'real_key virtual_key1').exec();
+  t.is(result.real_key, 'foo', 'Real properties should be returned');
+  t.is(result.virtual_key1, 'v_val1', 'All virtuals should be returned');
+  t.is(result.virtual_key2, 'v_val2', 'All virtuals should be returned');
+});
 
-    Model.find({}).lean().exec(function (err, results) {
-      t.equal(results[0].real_key, 'foo');
-      t.equal(results[0].virtual_key1, undefined);
-      t.equal(results[0].virtual_key2, undefined);
-      t.done();
-    });
-  },
-  tearDown: function (callback) {
-    Model.remove({}, function (err) {
-      callback();
-    });
-  }
-};
+test('No fields selected on lean query', async t => {
+  const result = await Model.findOne({}).lean().exec();
+  t.is(result.real_key, 'foo');
+  t.is(result.virtual_key1, undefined, 'No virtuals should be returned');
+  t.is(result.virtual_key2, undefined, 'No virtuals should be returned');
+});
+
+test.after.always(async () => {
+  await Model.remove({});
+  await mongoose.disconnect();
+});

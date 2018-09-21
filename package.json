@@ -7,7 +7,7 @@
     "node": ">=6.14.2"
   },
   "scripts": {
-    "test": "nodeunit tests/*.test.js"
+    "test": "ava **/*.test.js"
   },
   "keywords": [
     "moongoose",
@@ -24,11 +24,12 @@
   "author": "Makinde Adeagbo",
   "license": "ISC",
   "devDependencies": {
+    "ava": "1.0.0-beta.8",
     "mongoose": "~5.0",
     "mongoose-lean-virtuals": "0.3.0",
-    "nodeunit": "0.11.2",
     "np": "2.20.1"
   },
+  "repository": "github:devcolor/mongoose-select-virtuals",
   "bugs": {
     "url": "https://github.com/devcolor/mongoose-select-virtuals/issues"
   },
