@@ -27,7 +27,7 @@
     "ava": "1.0.0-beta.8",
     "mongoose": "~5.0",
     "mongoose-lean-virtuals": "0.3.0",
-    "np": "2.20.1"
+    "np": "3.0.4"
   },
   "repository": "github:devcolor/mongoose-select-virtuals",
   "bugs": {
