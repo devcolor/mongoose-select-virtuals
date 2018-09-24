@@ -7,6 +7,7 @@ Allows you to specify which virtuals fields should be returned in find queries w
 ### Note
 * The plugin has no effect on non-lean queries
 * Queries can be set as lean using any style, e.g. `myQuery.lean()`, `myQuery.setOptions({ lean: true })`, `myQuery.lean({virtuals: true})`, etc.
+* If only virtual fields are present in the `select` statement, no real properties will be retrieved from the database.
 * Specifying a virtual field in the `select` statement will exclude non-specified virtual fields, even if lean is set to `{virtuals: true}` (which would normally trigger all virtuals to be included). `Model.find({}, 'virtual_key').lean()` is the same as `.lean({ virtuals: ['virtual_key']})`.
 
 ## Getting Started

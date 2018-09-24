@@ -34,6 +34,13 @@ test('Virtual field in select, lean set to `true`', async t => {
   t.is(result.virtual_key2, undefined);
 });
 
+test('Only a virtual field is in the select', async t=> {
+  const result = await Model.findOne({}, 'virtual_key1').lean().exec();
+  t.is(result.real_key, undefined, 'Real fields should be excluded if not specified');
+  t.is(result.virtual_key1, 'v_val1');
+  t.is(result.virtual_key2, undefined);
+});
+
 test('Query is not lean', async t => {
   const result = await Model.findOne({}, 'real_key virtual_key1').exec();
   t.is(result.real_key, 'foo', 'Real properties should be returned');
