@@ -55,6 +55,13 @@ test('No fields selected on lean query', async t => {
   t.is(result.virtual_key2, undefined, 'No virtuals should be returned');
 });
 
+test('Only a real key in selection w/ lean virtuals', async t=> {
+  const result = await Model.findOne({}, 'real_key').lean({virtuals: true}).exec();
+  t.is(result.real_key, 'foo');
+  t.is(result.virtual_key1, undefined, 'No virtuals should be returned');
+  t.is(result.virtual_key2, undefined, 'No virtuals should be returned');
+});
+
 test.after.always(async () => {
   await Model.remove({});
   await mongoose.disconnect();

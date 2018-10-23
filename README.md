@@ -9,6 +9,7 @@ Allows you to specify which virtuals fields should be returned in find queries w
 * Queries can be set as lean using any style, e.g. `myQuery.lean()`, `myQuery.setOptions({ lean: true })`, `myQuery.lean({virtuals: true})`, etc.
 * If only virtual fields are present in the `select` statement, no real properties will be retrieved from the database.
 * Specifying a virtual field in the `select` statement will exclude non-specified virtual fields, even if lean is set to `{virtuals: true}` (which would normally trigger all virtuals to be included). `Model.find({}, 'virtual_key').lean()` is the same as `.lean({ virtuals: ['virtual_key']})`.
+* If a query has only real fields selected, no virtual fields will be included in the query
 
 ## Getting Started
 
@@ -54,8 +55,6 @@ We use [SemVer](http://semver.org/) for versioning and [np](https://www.npmjs.co
 ## Authors
 
 * **Makinde Adeagbo** - [makinde (github)](https://github.com/makinde)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
 ## License
 

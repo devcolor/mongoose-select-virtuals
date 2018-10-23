@@ -22,12 +22,16 @@ module.exports = function selectVirtuals(schema) {
 
       // At this point there was at least one virtual field mentioned in the selection. If
       // there are no more fields left in the selection, it means only virtual fields
-      // were selected and we shouldn't return any real fields. We need to explcitly set
+      // were selected and we shouldn't return any real fields. We need to explicitly set
       // only the `_id` field to come back since leaving the selection object blank would
       // return all real fields.
       if (Object.keys(selection).length === 0) {
         selection['_id'] = 1;
       }
+    } else if (Object.keys(selection).length > 0) {
+      // There are real fields specified, but no virtual keys specified
+      // In this case, don't return any virtuals
+      this._mongooseOptions.lean = true;
     }
 
     next();
