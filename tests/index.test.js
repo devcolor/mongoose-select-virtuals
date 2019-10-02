@@ -1,6 +1,7 @@
 const test = require('ava');
 const mongoose = require('mongoose');
 const leanVirtuals = require('mongoose-lean-virtuals');
+const { MongoMemoryServer } = require('mongodb-memory-server');
 const selectVirtuals = require('../');
 
 const schema = new mongoose.Schema({
@@ -12,12 +13,18 @@ schema.plugin(leanVirtuals);
 schema.plugin(selectVirtuals);
 
 const Model = mongoose.model('t1', schema);
+let mongoServer;
 
 test.before(async () => {
-  const dbUri = 'mongodb://localhost:27017/mongooseAuthorization';
-  mongoose.Promise = global.Promise;
-  await mongoose.connect(dbUri);
-  await Model.create({real_key: 'foo'});
+  mongoServer = new MongoMemoryServer();
+  const uri = await mongoServer.getConnectionString();
+  await mongoose.connect(uri, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true
+  });
+
+  await Model.create({ real_key: 'foo' });
 });
 
 test('Virtual field in select, lean set to `virtuals:true`', async t => {
@@ -65,4 +72,5 @@ test('Only a real key in selection w/ lean virtuals', async t=> {
 test.after.always(async () => {
   await Model.remove({});
   await mongoose.disconnect();
+  await mongoServer.stop();
 });
