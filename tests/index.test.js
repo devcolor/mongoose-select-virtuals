@@ -70,7 +70,7 @@ test('Only a real key in selection w/ lean virtuals', async t=> {
 });
 
 test.after.always(async () => {
-  await Model.remove({});
+  await Model.deleteMany({});
   await mongoose.disconnect();
   await mongoServer.stop();
 });
